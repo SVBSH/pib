@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  postgres:
+    build: .
+    ports:
+      - "60000:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
