@@ -8,7 +8,7 @@ module.exports = {
       {
         username: 'admin',
         email: 'admin@example.com',
-        password: 'hashed_password', // Nahraďte hashom hesla
+        password: 'hashed_password', 
         createdAt: new Date(),
         updatedAt: new Date(),
       },
