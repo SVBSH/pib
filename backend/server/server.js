@@ -1,12 +1,14 @@
 const express = require('express')
 require('dotenv').config()
+var cors = require('cors')
+
 
 const { sequelize, Job } = require('../db/models/index.js')
 
 const app = express()
-const SERVER_PORT = process.env.SERVER_PORT || 3000
+const SERVER_PORT = process.env.SERVER_PORT || 4000
 const SERVER_IP = process.env.SERVER_IP || 'localhost'
-
+app.use(cors());
 app.use(express.json())
 
 // register routes
