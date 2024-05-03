@@ -38,32 +38,6 @@ router.post('/login', async (req, res) => {
   }
 })
 
-
-// obid prihlasenie DB:   ' OR 1=1--
-// router.post('/login', async (req, res) => {
-//   const { username, password } = req.body;
-
-//   const unsafeQuery = `SELECT * FROM "Admins" WHERE username = '${username}' AND password = '${password}'`;
-
-//   try {
-//     const users = await sequelize.query(unsafeQuery, { type: sequelize.QueryTypes.SELECT });
-
-//     if (users.length > 0) {
-//       const user = users[0];
-//       const token = jwt.sign({ userId: user.id }, 'secretKey', {
-//         expiresIn: '1h',
-//       });
-
-//       res.json({ token });
-//     } else {
-//       res.status(401).json({ error: 'Invalid username or password' });
-//     }
-//   } catch (error) {
-//     console.error('SQL Error:', error);
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
-// });
-
 router.get('/jobs', async (req, res) => {
   console.log('user:');
   console.log(req.user);
