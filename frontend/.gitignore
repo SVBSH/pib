@@ -1,0 +1,26 @@
+# Avoid accidental Sketch file upload 
+###############################################
+## Please do not remove line 5 - thanks! 🙂 ##
+###############################################
+*.sketch
+
+# Avoid accidental XD or Figma upload if you convert the design file
+#######################################################
+## Please do not remove lines 11 and 12 - thanks! 🙂 ##
+#######################################################
+*.xd
+*.fig
+
+# Avoid your project being littered with annoying .DS_Store files!
+.DS_Store
+node_modules
+# npx sequelize-cli model:generate --name Job --attributes company:string,logo:string,logoBackground:string,position:string,postedAt:string,contract:string,location:string,website:string,apply:string,description:text,content:text,hidden:boolean --force
+# npx sequelize-cli seed:generate --name jobs-seeder
+
+# npx sequelize-cli db:migrate 
+
+# https://www.linkedin.com/pulse/create-react-18-app-without-npx-create-react-app-gyan-dev-mishra/
+# git reset HEAD~1
+# DELETE FROM "SequelizeMeta" WHERE "name" = '20240502180431-create-job.js';
+# npx sequelize-cli db:migrate:undo:all; npx sequelize-cli db:migrate
+# npx sequelize-cli db:seed:undo:all && npx sequelize-cli db:seed:all 
