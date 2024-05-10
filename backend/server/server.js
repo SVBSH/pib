@@ -14,6 +14,7 @@ app.use(express.json())
 // register routes
 app.use('/admin', require('./routes/admin.js'));
 app.use('/jobs', require('./routes/job.js'))
+app.use('/test', require('./routes/test.js'))
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

@@ -1,117 +1,162 @@
 <!DOCTYPE html>
 <html lang="sk">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Demonštrácia útoku - SQL Injekcie</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
 
-        p {
-            width: 120ch;
-        }
+      p {
+        width: 120ch;
+      }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+      .form-group {
+        margin-bottom: 15px;
+      }
 
-        label {
-            font-weight: bold;
-            display: block;
-        }
+      label {
+        font-weight: bold;
+        display: block;
+      }
 
-        input[type="text"], 
-        textarea {
-            /* width: 100%; */
-            min-width: 550px;
-            padding: 8px;
-            margin-top: 5px;
-        }
+      input[type="text"],
+      textarea {
+        /* width: 100%; */
+        min-width: 550px;
+        padding: 8px;
+        margin-top: 5px;
+      }
 
-        button {
-            padding: 8px 16px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 5px;
-        }
+      button {
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 5px;
+      }
 
-        button:hover {
-            background-color: #0056b3;
-        }
+      button:hover {
+        background-color: #0056b3;
+      }
 
-        .description {
-            font-size: 0.8rem;
-            margin-top: 4px;
-            color: #555;
-        }
+      .description {
+        font-size: 0.8rem;
+        margin-top: 4px;
+        color: #555;
+      }
 
-        .container {
-            margin-block: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
+      .container {
+        margin-block: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .results {
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #f8f8f8;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>Testovacie vstupy pre SQL injekciu</h1>
     <p class="page-description">
-        Táto stránka slúži na demonstráciu rôznych typov SQL injekcií a je výhradne určená iba na vzdelávacie účely.
+      Táto stránka slúži na demonstráciu rôznych typov SQL injekcií a je
+      výhradne určená iba na vzdelávacie účely.
     </p>
     <div class="container">
-        <div class="form-group">
-            <label for="boolean-based">Boolovska SQL Injekcia:</label>
-            <input type="text" id="boolean-based" placeholder="' OR '1'='1">
-            <div class="description">
-                Boolovská injekcia, meniaca logiku podmienkovych príkazov SQL dotazu, aby mohla vrátiť pravdivé alebo nepravdivé
-                výsledky a odhaliť skryte dáta.
-            </div>
-            <button onclick="testInjection('boolean-based')">Boolovskú Injekcia - Test</button>
+      <div class="form-group">
+        <label for="boolean-based">Boolovska SQL Injekcia:</label>
+        <input type="text" id="boolean-based" placeholder="1=1" />
+        <div class="description">
+          Boolovská injekcia, meniaca logiku podmienkovych príkazov SQL dotazu,
+          aby mohla vrátiť pravdivé alebo nepravdivé výsledky a odhaliť skryte
+          dáta.
         </div>
-        <div class="form-group">
-            <label for="time-based">Časovo založená SQL Injekcia:</label>
-            <input type="text" id="time-based" placeholder="'; WAITFOR DELAY '00:00:05'">
-            <div class="description">
-                Techniky založené na čase sa používajú na vykonanie akcii, ktoré zdržia odpoved, a dávajú útočníkovi indície
-                o štruktúre databázy.
-            </div>
-            <button onclick="testInjection('time-based')">Časovo založen injekcia - Test</button>
+        <button onclick="testInjection('boolean-based')">
+          Boolovskú Injekcia - Test
+        </button>
+        <div id="results-boolean-based" class="results"></div>
+      </div>
+      <div class="form-group">
+        <label for="time-based">Časovo založená SQL Injekcia:</label>
+        <input
+          type="text"
+          id="time-based"
+          placeholder="'; WAITFOR DELAY '00:00:05'"
+        />
+        <div class="description">
+          Techniky založené na čase sa používajú na vykonanie akcii, ktoré
+          zdržia odpoved, a dávajú útočníkovi indície o štruktúre databázy.
         </div>
-        <div class="form-group">
-            <label for="union-based">Union-Based SQL Injekcia:</label>
-            <input type="text" id="union-based" placeholder="' UNION SELECT username, password FROM users">
-            <div class="description">
-                Union-based injekcia využíva SQL operátor UNION na spojenie výsledkov dvoch alebo viacerých SELECT príkazov
-                do jediného výsledku, ktorý je následne vrátený ako súčasť HTTP response.
-            </div>
-            <button onclick="testInjection('union-based')">Union - Based injekcia - Test</button>
+        <button onclick="testInjection('time-based')">
+          Časovo založen injekcia - Test
+        </button>
+        <div id="results-time-based" class="results"></div>
+      </div>
+      <div class="form-group">
+        <label for="union-based">Union-Based SQL Injekcia:</label>
+        <input
+          type="text"
+          id="union-based"
+          placeholder='UNION SELECT username, password FROM "Admins"'
+        />
+        <div class="description">
+          Union-based injekcia využíva SQL operátor UNION na spojenie výsledkov
+          dvoch alebo viacerých SELECT príkazov do jediného výsledku, ktorý je
+          následne vrátený ako súčasť HTTP response.
         </div>
-        <div class="form-group">
-            <label for="error-based">Error based SQL Injekcia:</label>
-            <input type="text" id="error-based" placeholder="' OR 1=1 --">
-            <div class="description">
-                Tento prístup spočíva v spôsobení, aby databáza produkovala chybové správy, ktoré odhalia
-                informacie o jej štruktúre.
-            </div>
-            <button onclick="testInjection('error-based')">Chybovú injekcia - Test </button>
+        <button onclick="testInjection('union-based')">
+          Union - Based injekcia - Test
+        </button>
+        <div id="results-union-based" class="results"></div>
+      </div>
+      <div class="form-group">
+        <label for="error-based">Error based SQL Injekcia:</label>
+        <input type="text" id="error-based" placeholder="' OR 1=1 --" />
+        <div class="description">
+          Tento prístup spočíva v tom, aby databáza produkovala chybové
+          správy, ktoré odhalia informacie o jej štruktúre.
         </div>
+        <button onclick="testInjection('error-based')">
+          Chybovú injekcia - Test
+        </button>
+        <div id="results-error-based" class="results"></div>
+      </div>
     </div>
 
     <script>
-        function testInjection(inputId) {
-            const inputValue = document.getElementById(inputId).value;
-            console.log(`${inputId} SQL Injection Test:`, inputValue);
-            alert(`Údaje odoslané do konzoly: ${inputValue}`);
-        }
-    </script>
-</body>
+      function testInjection(type) {
+        const inputElement = document.getElementById(type);
+        const inputValue = inputElement.value;
+        const url = `http://localhost:4000/test/${type}`;
 
+        fetch(url + `?condition=${encodeURIComponent(inputValue)}`, {
+          method: "GET",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const resultsElement = document.getElementById(`results-${type}`);
+            resultsElement.innerHTML = `<strong>Response:</strong> ${JSON.stringify(
+              data
+            )}`;
+            console.log(`${type} SQL Injection Test:`, data);
+          })
+          .catch((error) => {
+            const resultsElement = document.getElementById(`results-${type}`);
+            resultsElement.innerHTML = `<strong>Error:</strong> ${error.message}`;
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
 </html>
